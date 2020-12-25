@@ -24,23 +24,11 @@ public class UserAuthorization {
     public boolean EndpointIsAllowed(String userName, String endpoint, Map<String, String> params) {
         List<MUser> users = mUserRepository.findByUserName(userName);
         if(users.isEmpty()) return false;
-        log.info("OK2.1");
 
         List<MEndpoint> userEndpoints = users.stream().map(MUser::getMEndpoints).flatMap(List::stream).collect(Collectors.toList());
-        log.info("OK2.2");
-        log.info(userEndpoints.toString());
-        log.info("OK.2.2.1");
-        List<MEndpoint> matchesEndpoints = userEndpoints.stream().filter(
-                ep -> {log.info("Endpoint: " + endpoint); log.info("Ep: " + ep.getContent());
-                if(ep.getContent().equals(endpoint)) log.info("Equals"); if(Pattern.matches(endpoint, ep.getContent())) log.info("Matches");
-                if(ep.getContent().equals(endpoint) || Pattern.matches(endpoint, ep.getContent())) log.info("Equals or matches");
-                return ep.getContent().equals(endpoint) || Pattern.matches(ep.getContent(), endpoint);}).collect(Collectors.toList());
-        log.info("OK2.2.2");
-        log.info(matchesEndpoints.toString());
-        if(matchesEndpoints.isEmpty()) {log.info("OK2.2.3"); return false;}
+        List<MEndpoint> matchesEndpoints = userEndpoints.stream().filter(ep -> ep.getContent().equals(endpoint) || Pattern.matches(ep.getContent(), endpoint)).collect(Collectors.toList());
+        if(matchesEndpoints.isEmpty()) return false;
 
-        log.info("OK2.3");
-        log.info(params.toString());
         if(params.isEmpty()) return true;
 
         MEndpoint curEndpoint = matchesEndpoints.get(0);

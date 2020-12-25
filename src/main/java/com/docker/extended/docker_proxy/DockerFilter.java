@@ -66,31 +66,19 @@ public class DockerFilter extends ZuulFilter {
 
     private Map<String, String> BodyReader(HttpServletRequest request)
     {
-        log.info("OK1");
         try {
-            log.info("OK1.0");
-            log.info(request.toString());
-            log.info("OK1.1");
             String ct = request.getContentType();
-            log.info(ct);
-            log.info("OK1.2");
-            if(ct == null) {log.info("OK1.3"); return new HashMap<>();}
-            log.info("OK2");
+            if(ct == null) return new HashMap<>();
 
             String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
             log.info(body);
-            log.info("OK3");
 
             if(!request.getContentType().equals("application/json")) return new HashMap<>();
 
             try {
                 JSONObject json = (JSONObject) new JSONParser().parse(body);
                 Set<String> keys = json.keySet();
-                log.info("OK4");
-                log.info(keys.toString());
                 Map<String, String> params = keys.stream().collect(Collectors.toMap(key -> key, key -> json.get(key).toString()));
-                log.info(params.toString());
-                log.info("OK5");
                 return params;
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -99,7 +87,6 @@ public class DockerFilter extends ZuulFilter {
             e.printStackTrace();
         }
 
-        log.info("OK6");
         return new HashMap<>();
     }
 }

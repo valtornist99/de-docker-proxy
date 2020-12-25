@@ -68,7 +68,12 @@ public class DockerFilter extends ZuulFilter {
     {
         log.info("OK1");
         try {
-            if(request.getContentType() == null) return new HashMap<>();
+            log.info(request.toString());
+            log.info("OK1.1");
+            String ct = request.getContentType();
+            log.info(ct);
+            log.info("OK1.2");
+            if(ct == null) {log.info("OK1.3"); return new HashMap<>();}
             log.info("OK2");
 
             String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));

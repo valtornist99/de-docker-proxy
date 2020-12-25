@@ -26,16 +26,15 @@ public class UserAuthorization {
         if(users.isEmpty()) return false;
         log.info("OK2.1");
 
-        MUser user = users.get(0);
-        List<MEndpoint> userEndpoints = user.getMEndpoints();
+        List<MEndpoint> userEndpoints = users.stream().map(MUser::getMEndpoints).flatMap(List::stream).collect(Collectors.toList());
         log.info("OK2.2");
         log.info(userEndpoints.toString());
         log.info("OK.2.2.1");
         List<MEndpoint> matchesEndpoints = userEndpoints.stream().filter(
                 ep -> {log.info("Endpoint: " + endpoint); log.info("Ep: " + ep.getContent());
-                if(endpoint.equals(ep.getContent())) log.info("Equals"); if(Pattern.matches(endpoint, ep.getContent())) log.info("Matches");
-                if(endpoint.equals(ep.getContent()) || Pattern.matches(endpoint, ep.getContent())) log.info("Equals or matches");
-                return endpoint.equals(ep.getContent()) || Pattern.matches(endpoint, ep.getContent());}).collect(Collectors.toList());
+                if(ep.getContent().equals(endpoint)) log.info("Equals"); if(Pattern.matches(endpoint, ep.getContent())) log.info("Matches");
+                if(ep.getContent().equals(endpoint) || Pattern.matches(endpoint, ep.getContent())) log.info("Equals or matches");
+                return ep.getContent().equals(endpoint) || Pattern.matches(ep.getContent(), endpoint);}).collect(Collectors.toList());
         log.info("OK2.2.2");
         log.info(matchesEndpoints.toString());
         if(matchesEndpoints.isEmpty()) {log.info("OK2.2.3"); return false;}

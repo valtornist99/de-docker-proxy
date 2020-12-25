@@ -31,7 +31,7 @@ public class UserAuthorization {
         log.info("OK2.2");
         log.info(userEndpoints.toString());
         log.info("OK.2.2.1");
-        List<MEndpoint> matchesEndpoints = userEndpoints.stream().filter(ep -> Pattern.matches(endpoint, ep.getContent())).collect(Collectors.toList());
+        List<MEndpoint> matchesEndpoints = userEndpoints.stream().filter(ep -> endpoint.equals(ep.getContent()) || Pattern.matches(endpoint, ep.getContent())).collect(Collectors.toList());
         log.info("OK2.2.2");
         log.info(matchesEndpoints.toString());
         if(matchesEndpoints.isEmpty()) {log.info("OK2.2.3"); return false;}

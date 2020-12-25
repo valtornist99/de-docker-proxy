@@ -68,6 +68,7 @@ public class DockerFilter extends ZuulFilter {
     {
         log.info("OK1");
         try {
+            log.info("OK1.0");
             log.info(request.toString());
             log.info("OK1.1");
             String ct = request.getContentType();

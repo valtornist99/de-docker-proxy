@@ -24,12 +24,15 @@ public class UserAuthorization {
     public boolean EndpointIsAllowed(String userName, String endpoint, Map<String, String> params) {
         List<MUser> users = mUserRepository.findByUserName(userName);
         if(users.isEmpty()) return false;
+        log.info("OK2.1");
 
         MUser user = users.get(0);
         List<MEndpoint> userEndpoints = user.getMEndpoints();
+        log.info("OK2.2");
         List<MEndpoint> matchesEndpoints = userEndpoints.stream().filter(ep -> Pattern.matches(endpoint, ep.getContent())).collect(Collectors.toList());
         if(matchesEndpoints.isEmpty()) return false;
 
+        log.info("OK2.3");
         log.info(params.toString());
         if(params.isEmpty()) return true;
 

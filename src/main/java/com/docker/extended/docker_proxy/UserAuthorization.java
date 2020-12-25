@@ -29,6 +29,8 @@ public class UserAuthorization {
         MUser user = users.get(0);
         List<MEndpoint> userEndpoints = user.getMEndpoints();
         log.info("OK2.2");
+        log.info(userEndpoints.toString());
+        log.info("OK.2.2.1");
         List<MEndpoint> matchesEndpoints = userEndpoints.stream().filter(ep -> Pattern.matches(endpoint, ep.getContent())).collect(Collectors.toList());
         if(matchesEndpoints.isEmpty()) return false;
 

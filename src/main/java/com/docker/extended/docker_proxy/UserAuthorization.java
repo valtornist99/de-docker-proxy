@@ -5,6 +5,7 @@ import com.docker.extended.docker_proxy.domain.main.MParam;
 import com.docker.extended.docker_proxy.domain.main.MUser;
 import com.docker.extended.docker_proxy.repository.main.MUserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -13,6 +14,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class UserAuthorization {
@@ -27,6 +29,9 @@ public class UserAuthorization {
         List<MEndpoint> userEndpoints = user.getMEndpoints();
         List<MEndpoint> matchesEndpoints = userEndpoints.stream().filter(ep -> Pattern.matches(endpoint, ep.getContent())).collect(Collectors.toList());
         if(matchesEndpoints.isEmpty()) return false;
+
+        log.info(params.toString());
+        if(params.isEmpty()) return true;
 
         MEndpoint curEndpoint = matchesEndpoints.get(0);
         List<String> curParams = curEndpoint.getMParams().stream().map(MParam::getContent).collect(Collectors.toList());

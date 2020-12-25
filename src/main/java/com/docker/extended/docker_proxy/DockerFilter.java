@@ -56,10 +56,10 @@ public class DockerFilter extends ZuulFilter {
         String contentType = request.getContentType();
         log.info("Content type: " + contentType);
 
-        if(!userAuthorization.EndpointIsAllowed(request.getHeader("docker-extended-user-name"), path, BodyReader(request))) {
-            ctx.unset();
-            ctx.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
-        }
+//        if(!userAuthorization.EndpointIsAllowed(request.getHeader("docker-extended-user-name"), path, BodyReader(request))) {
+//            ctx.unset();
+//            ctx.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
+//        }
 
         return null;
     }
